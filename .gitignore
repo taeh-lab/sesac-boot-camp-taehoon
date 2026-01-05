@@ -1,0 +1,14 @@
+# 환경 변수 파일 (가장 중요)
+.env
+.env.local
+
+# 노드 패키지 관련 (용량이 크고 재설치 가능하므로 제외)
+node_modules/
+settings.json
+
+# OS 생성 파일
+Thumbs.db
+.DS_Store
+
+# 로그 파일
+*.log
