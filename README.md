@@ -42,6 +42,8 @@
 - **SeSac Boot Camp**: 파이썬 기반 AI 서비스 개발자 과정 수강 중 (2026.01 ~ )
 - **Goal**: 탄탄한 CS 기초와 Git 협업 능력을 갖춘 개발자 되기
 
+---
+
 ### 📊 My GitHub Stats & Streak
 <p align="center">
   <img src="https://github-readme-stats.vercel.app/api?username=taeh-lab&show_icons=true&theme=radical&hides_border=true" alt="taehunyun's GitHub stats" />
