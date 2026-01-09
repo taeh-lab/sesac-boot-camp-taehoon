@@ -32,6 +32,16 @@
 
 ---
 
+### 📅 Learning Logs (TIL)
+> 매일의 학습 내용을 기록하며 꾸준히 성장하고 있습니다.
+- [📂 전체 학습 기록 보기](./TIL)
+
+---
+
+### 📝 Current Training
+- **SeSac Boot Camp**: 파이썬 기반 AI 서비스 개발자 과정 수강 중 (2026.01 ~ )
+- **Goal**: 탄탄한 CS 기초와 Git 협업 능력을 갖춘 개발자 되기
+
 ### 📊 My GitHub Stats & Streak
 <p align="center">
   <img src="https://github-readme-stats.vercel.app/api?username=taeh-lab&show_icons=true&theme=radical&hides_border=true" alt="taehunyun's GitHub stats" />
