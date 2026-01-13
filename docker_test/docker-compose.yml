@@ -1,0 +1,14 @@
+services:
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=134679
+      - MYSQL_DATABASE=sample
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8081:8080"

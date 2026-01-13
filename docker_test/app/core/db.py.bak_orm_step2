@@ -1,0 +1,33 @@
+import pymysql
+from queue import Queue
+from app.core.settings import settings
+
+class PymysqlConnectionPool:
+    def __init__(self, maxsize=5):
+        self._pool = Queue(maxsize)
+        self._db_params = {
+            "host": settings.DB_HOST,
+            "user": settings.DB_USER,
+            "password": settings.DB_PASSWORD,
+            "database": settings.DB_NAME,
+            "charset": settings.DB_CHARSET,
+            "cursorclass": pymysql.cursors.DictCursor
+        }
+        for _ in range(maxsize):
+            self._pool.put(self._create_conn())
+
+    def _create_conn(self):
+        return pymysql.connect(**self._db_params)
+
+    def get_conn(self):
+        conn = self._pool.get()
+        try:
+            conn.ping(reconnect=True)
+        except:
+            conn = self._create_conn()
+        return conn
+
+    def release_connection(self, conn):
+        self._pool.put(conn)
+
+pool = PymysqlConnectionPool()
