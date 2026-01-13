@@ -1,0 +1,87 @@
+from fastapi import FastAPI, Request, HTTPException # 필수 모듈 불러오기
+import mysql.connector
+
+app = FastAPI() # 'app' 정의 (에러 해결)
+
+# 'get_db' 함수 정의 (에러 해결)
+def get_db():
+    return mysql.connector.connect(
+        host="localhost",
+        port=3306,
+        user="root",
+        password="134679", 
+        database="sample"
+    )
+
+# ---------------------------
+# CREATE
+# ---------------------------
+@app.post("/todos")
+async def create_todo(request: Request):
+    body = await request.json()
+    content = body.get("content")
+
+    if not content:
+        raise HTTPException(status_code=400, detail="content is required")
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # 데이터 삽입 [cite: 183, 201]
+    cursor.execute("INSERT INTO todo (content) VALUES (%s)", (content,))
+    conn.commit() # 반영 [cite: 88, 205]
+
+    todo_id = cursor.lastrowid
+
+    # 방금 생성한 데이터 조회 [cite: 211, 212]
+    cursor.execute("SELECT id, content, created_at FROM todo WHERE id = %s", (todo_id,))
+    row = cursor.fetchone() # 결과 가져오기 [cite: 86, 119]
+
+    cursor.close()
+    conn.close() # 종료 [cite: 93, 122]
+
+    return {
+        "id": row[0],
+        "content": row[1],
+        "created_at": str(row[2])
+    }
+
+# ---------------------------
+# READ (목록 조회)
+# ---------------------------
+@app.get("/todos")
+def get_todos():
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT id, content, created_at FROM todo")
+    rows = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return [
+        {"id": r[0], "content": r[1], "created_at": str(r[2])}
+        for r in rows
+    ]
+
+# ---------------------------
+# DELETE (삭제)
+# ---------------------------
+@app.delete("/todos/{todo_id}")
+def delete_todo(todo_id: int):
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM todo WHERE id = %s", (todo_id,))
+    conn.commit()
+
+    affected = cursor.rowcount
+
+    cursor.close()
+    conn.close()
+
+    if affected == 0:
+        raise HTTPException(status_code=404, detail="Todo not found")
+
+    return {"message": "Todo deleted"}
